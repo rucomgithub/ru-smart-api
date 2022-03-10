@@ -2,8 +2,6 @@ package handlers
 
 import (
 	"RU-Smart-Workspace/ru-smart-api/repositories"
-	"log"
-	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
@@ -18,20 +16,21 @@ func NewStudentHandlers(studentRepo repositories.StudentRepoInterface) studentHa
 
 func (h studentHandlers) Authentication(c *gin.Context) {
 
-	var requestBody repositories.AuthenPlayload
-	err := c.ShouldBindJSON(&requestBody)
-	if err != nil {
-		log.Println("ตายที่ Authentication",err.Error())
-		c.IndentedJSON(http.StatusUnauthorized, "ตายที่ Authentication")
-		c.Abort()
-	}
+	// var requestBody repositories.AuthenPlayload
 
-	token, err := h.studentRepo.GetAuthentication(requestBody.Std_code)
-	if err != nil {
-		log.Println("ตายที่ Authentication",err.Error())
-		c.IndentedJSON(http.StatusUnauthorized, "ตายที่ generate token Authentication")
-		c.Abort()
-	}
+	// err := c.ShouldBindJSON(&requestBody)
+	// if err != nil {
+	// 	log.Println("ตายที่ Authentication",err.Error())
+	// 	c.IndentedJSON(http.StatusUnauthorized, "ตายที่ Authentication")
+	// 	c.Abort()
+	// }
 
-	log.Println("stdCode ==> ", token)
+	// token, err := h.studentRepo.GetAuthentication(requestBody.Std_code)
+	// if err != nil {
+	// 	log.Println("ตายที่ Authentication",err.Error())
+	// 	c.IndentedJSON(http.StatusUnauthorized, "ตายที่ generate token Authentication")
+	// 	c.Abort()
+	// }
+
+	// log.Println("stdCode ==> ", token)
 }

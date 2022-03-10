@@ -1,0 +1,33 @@
+ruSmart: 
+  port: ":9100"
+
+db: 
+  openDriver: "godror"
+  connection: 
+    "user=\"rusmart\" 
+     password=\"ru5mart65#\" 
+     connectString=\"10.2.1.125:1521/RUDEV?expire_timconnect_time=2\"
+     sysdba=0
+     sysoper=0
+     poolMinSessions=1
+     poolMaxSessions=1000
+     poolIncrement=1
+     standaloneConnection=0
+     enableEvents=0
+     heterogeneousPool=0
+     externalAuth=0
+     prelim=0
+     poolWaitTimeout=5m
+     poolSessionMaxLifetime=1h
+     poolSessionTimeout=30s
+     timezone=\"local\""
+
+# rdb:
+#   addressLocal: "127.0.0.1:6379" 
+#   address: "survey-redis:6379"
+#   password: "admin-survey"
+#   db-num: 0
+
+# token: 
+#   issuer: "survey"
+#   secretKey: "S!U@R#V$E%Y~S!U@R#V$E%Y~S!U@R#V$E%Y"

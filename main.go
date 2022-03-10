@@ -3,10 +3,9 @@ package main
 import (
 	"RU-Smart-Workspace/ru-smart-api/databases"
 	"RU-Smart-Workspace/ru-smart-api/environments"
+	"RU-Smart-Workspace/ru-smart-api/handlers"
 	"RU-Smart-Workspace/ru-smart-api/middlewares"
 	"RU-Smart-Workspace/ru-smart-api/repositories"
-	"log"
-	"net/http"
 
 	"github.com/gin-gonic/gin"
 	_ "github.com/godror/godror"
@@ -29,28 +28,34 @@ func main() {
 	}
 	defer oracle_db.Close()
 
-	newStudentRepo := repositories.NewStudentProfileRepo(oracle_db)
-
-
-
-	// newMiddlewares := repositories.NewStudentProfileRepo(oracle_db)
+	newStudentRepo := repositories.NewStudentRepo(oracle_db)
+	newStudentHandler := handlers.NewStudentHandlers(newStudentRepo)
 
 	googleAuth := router.Group("/google")
 	{
-		googleAuth.POST("/authorization", middlewares.GoogleAuth)
+		googleAuth.POST("/authorization", middlewares.GoogleAuth, newStudentHandler.Authentication)
 	}
+
+
+	// student := router.Group("/student")
+	// {
+	// 	student.POST("/authentication", newStudentHandler.Authentication)
+	// 	student.POST("/profile", middlewares.authorization, newStudentHandler.Authentication)
+	// 	student.POST("/news", newStudentHandler.Authentication)
+	// }
+
+
 	
-	router.GET("/Authentication",func (c *gin.Context) {
-		studentProfile, err :=  newStudentRepo.GetAuthentication("6299999991")
-		if err != nil {
-			log.Fatal(err)
-			c.Abort()
-		}
+	// router.GET("/Authentication",func (c *gin.Context) {
+	// 	studentProfile, err :=  newStudentRepo.GetAuthentication("6299999991")
+	// 	if err != nil {
+	// 		log.Fatal(err)
+	// 		c.Abort()
+	// 	}
 
-		c.IndentedJSON(http.StatusOK, studentProfile)
-		c.Next()
-
-	})
+	// 	c.IndentedJSON(http.StatusOK, studentProfile)
+	// 	c.Next()
+	// })
 
     PORT := viper.GetString("ruSmart.port")
 	router.Run(PORT)

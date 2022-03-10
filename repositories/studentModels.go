@@ -3,7 +3,7 @@ package repositories
 import "github.com/jmoiron/sqlx"
 
 type (
-	studentProfileRepoDB struct {
+	studentRepoDB struct {
 		oracle_db *sqlx.DB
 	}
 
@@ -27,13 +27,19 @@ type (
 		EMAIL_ADDRESS        string `db:"EMAIL_ADDRESS"`
 	}
 
-	TokenRepo struct {
+	PrepareTokenRepo struct {
 		STD_CODE string `db:"STD_CODE"`
 		STATUS   int `db:"STATUS"`
 	}
 
-	StudentProfileRepoInterface interface {
+	StudentRepoInterface interface {
 		GetStudentProfile(studentCode string) (*StudentProfileRepo, error)
-		GetAuthentication(studentCode string) (*TokenRepo, error)
+		GetAuthentication(studentCode string) (*PrepareTokenRepo, error)
 	}
+
 )
+
+func NewStudentRepo(oracle_db *sqlx.DB) StudentRepoInterface {
+	return studentRepoDB{oracle_db: oracle_db}
+}
+

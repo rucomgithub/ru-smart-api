@@ -1,36 +1,36 @@
 package handlers
 
 import (
-	"RU-Smart-Workspace/ru-smart-api/repositories"
+	"RU-Smart-Workspace/ru-smart-api/services"
+	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
 
 type studentHandlers struct {
-	studentRepo repositories.StudentRepoInterface
+	studentService services.StudentServicesInterface
 }
 
-func NewStudentHandlers(studentRepo repositories.StudentRepoInterface) studentHandlers {
-	return studentHandlers{studentRepo: studentRepo}
+func NewStudentHandlers(studentService services.StudentServicesInterface) studentHandlers {
+	return studentHandlers{studentService: studentService}
 }
 
 func (h studentHandlers) Authentication(c *gin.Context) {
 
-	// var requestBody repositories.AuthenPlayload
+	var requestBody services.AuthenPlayload
 
-	// err := c.ShouldBindJSON(&requestBody)
-	// if err != nil {
-	// 	log.Println("ตายที่ Authentication",err.Error())
-	// 	c.IndentedJSON(http.StatusUnauthorized, "ตายที่ Authentication")
-	// 	c.Abort()
-	// }
+	err := c.ShouldBindJSON(&requestBody)
+	if err != nil {
+		c.IndentedJSON(http.StatusUnauthorized, err)
+		c.Abort()
+	}
 
-	// token, err := h.studentRepo.GetAuthentication(requestBody.Std_code)
-	// if err != nil {
-	// 	log.Println("ตายที่ Authentication",err.Error())
-	// 	c.IndentedJSON(http.StatusUnauthorized, "ตายที่ generate token Authentication")
-	// 	c.Abort()
-	// }
+	token, err := h.studentService.Authentication(requestBody.Std_code)
+	if err != nil {
+		c.IndentedJSON(http.StatusUnauthorized, err)
+		c.Abort()
+	}
 
-	// log.Println("stdCode ==> ", token)
+	c.IndentedJSON(http.StatusOK, token)
+	
 }

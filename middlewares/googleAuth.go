@@ -2,7 +2,6 @@ package middlewares
 
 import (
 	"context"
-	"log"
 	"net/http"
 	"time"
 
@@ -25,21 +24,18 @@ func GoogleAuth(c *gin.Context) {
 		return
 	}
 
-	googleAuthVerify, err := verifyGoogleAuth(ID_TOKEN)
+	_, err := verifyGoogleAuth(ID_TOKEN)
 	if err != nil {
 		c.IndentedJSON(http.StatusUnauthorized, gin.H{"accessToken": "", "isAuth": false, "message": "Google is not authorized"})
 		c.Abort()
 		return
 	}
-
-	log.Println("LOG จาก Google authorized ไป generate token ต่อ...", googleAuthVerify)
 	c.Next()
 
 }
 
 func verifyGoogleAuth(id_token string) (*oauth2.Tokeninfo, error) {
 
-	// ตั้งเวลาการรอคอย หรือกำหนดการหยุดเชื่อมต่อกรณีที่ไม่ได้ Respose จาก Google
 	timeout := time.Duration(5 * time.Second)
 	httpClient := &http.Client{Timeout: timeout}
 

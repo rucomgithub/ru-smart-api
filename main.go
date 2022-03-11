@@ -6,6 +6,7 @@ import (
 	"RU-Smart-Workspace/ru-smart-api/handlers"
 	"RU-Smart-Workspace/ru-smart-api/middlewares"
 	"RU-Smart-Workspace/ru-smart-api/repositories"
+	"RU-Smart-Workspace/ru-smart-api/services"
 
 	"github.com/gin-gonic/gin"
 	_ "github.com/godror/godror"
@@ -28,12 +29,13 @@ func main() {
 	}
 	defer oracle_db.Close()
 
-	newStudentRepo := repositories.NewStudentRepo(oracle_db)
-	newStudentHandler := handlers.NewStudentHandlers(newStudentRepo)
+	studentRepo := repositories.NewStudentRepo(oracle_db)
+	studentService := services.NewStudentServices(studentRepo)
+	studentHandler := handlers.NewStudentHandlers(studentService)
 
 	googleAuth := router.Group("/google")
 	{
-		googleAuth.POST("/authorization", middlewares.GoogleAuth, newStudentHandler.Authentication)
+		googleAuth.POST("/authorization", middlewares.GoogleAuth, studentHandler.Authentication)
 	}
 
 

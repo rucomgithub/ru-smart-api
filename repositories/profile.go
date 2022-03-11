@@ -15,7 +15,7 @@ func (r studentRepoDB) GetStudentProfile(studentCode string) (student *StudentPr
 	return student, nil
 }
 
-func (r studentRepoDB) GetAuthentication(studentCode string) (token *PrepareTokenRepo, err error) {
+func (r studentRepoDB) Authentication(studentCode string) (token *PrepareTokenRepo, err error) {
 
 	tempToken := PrepareTokenRepo{}
 	query := `SELECT STD_CODE, (1) AS STATUS  FROM DBBACH00.VM_STUDENT_PROFILE WHERE STD_CODE = :param1`

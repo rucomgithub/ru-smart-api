@@ -1,6 +1,13 @@
 package services
 
+import "RU-Smart-Workspace/ru-smart-api/repositories"
+
 type (
+
+	studentServices struct {
+		studentRepo repositories.StudentRepoInterface
+	}
+
 	AuthenPlayload struct {
 		Std_code string `json:"std_code"`
 	}
@@ -31,11 +38,11 @@ type (
 	}
 
 	StudentServicesInterface interface {
-		// GetStudentProfile(studentCode string) (*StudentProfileRepo, error)
-		Authentication(studentCode string) (*TokenResponse, error)
+		Authentication(stdCode string) (*TokenResponse, error)
 	}
 )
 
-func NewStudentServices() StudentServicesInterface {
-	return nil
+func NewStudentServices(studentRepo repositories.StudentRepoInterface) StudentServicesInterface {
+	return studentServices{studentRepo: studentRepo}
 }
+

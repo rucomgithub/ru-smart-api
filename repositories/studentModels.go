@@ -34,7 +34,7 @@ type (
 
 	StudentRepoInterface interface {
 		GetStudentProfile(studentCode string) (*StudentProfileRepo, error)
-		GetAuthentication(studentCode string) (*PrepareTokenRepo, error)
+		Authentication(studentCode string) (*PrepareTokenRepo, error)
 	}
 
 )

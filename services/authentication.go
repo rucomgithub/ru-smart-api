@@ -1,3 +1,35 @@
 package services
 
-// func (s )
+import (
+	"RU-Smart-Workspace/ru-smart-api/middlewares"
+	"log"
+)
+
+func (s studentServices) Authentication(stdCode string) (*TokenResponse, error) {
+
+	prepareToken, err := s.studentRepo.Authentication(stdCode)
+	if err != nil || prepareToken.STATUS != 1 {  
+		return nil, err
+	}
+
+	generateToken, err := middlewares.GenerateToken(prepareToken.STD_CODE)
+	if err != nil {
+		return nil, err
+	}
+
+	log.Println("--------- in services -----------")
+	log.Println("--------- AccessToken -----------")
+	log.Println("AccessToken :: ", generateToken.AccessToken)
+	log.Println("--------- RefreshToken ----------")
+	log.Println("RefreshToken :: ", generateToken.RefreshToken)
+	log.Println("---------------------------------")
+
+	studentTokenResponse := TokenResponse{
+		AccessToken  : generateToken.AccessToken,
+		RefreshToken : generateToken.RefreshToken,
+		IsAuth       : generateToken.IsAuth,
+		Message      : "Generate Token success...",
+		StatusCode   : 200,
+	}
+	return &studentTokenResponse, nil
+}

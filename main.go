@@ -29,8 +29,12 @@ func main() {
 	}
 	defer oracle_db.Close()
 
+	redis_cache := databases.NewDatabases().RedisConnection()
+	defer redis_cache.Close()
+
+
 	studentRepo := repositories.NewStudentRepo(oracle_db)
-	studentService := services.NewStudentServices(studentRepo)
+	studentService := services.NewStudentServices(studentRepo,redis_cache)
 	studentHandler := handlers.NewStudentHandlers(studentService)
 
 	googleAuth := router.Group("/google")
@@ -39,25 +43,11 @@ func main() {
 	}
 
 
-	// student := router.Group("/student")
-	// {
-	// 	student.POST("/authentication", newStudentHandler.Authentication)
-	// 	student.POST("/profile", middlewares.authorization, newStudentHandler.Authentication)
-	// 	student.POST("/news", newStudentHandler.Authentication)
-	// }
-
-
-	
-	// router.GET("/Authentication",func (c *gin.Context) {
-	// 	studentProfile, err :=  newStudentRepo.GetAuthentication("6299999991")
-	// 	if err != nil {
-	// 		log.Fatal(err)
-	// 		c.Abort()
-	// 	}
-
-	// 	c.IndentedJSON(http.StatusOK, studentProfile)
-	// 	c.Next()
-	// })
+	student := router.Group("/student")
+	{
+		student.POST("/refresh-authentication", middlewares.Authorization(redis_cache))
+		student.GET("/profile/:std_code", middlewares.Authorization(redis_cache), studentHandler.GetStudentProfile)
+	}
 
     PORT := viper.GetString("ruSmart.port")
 	router.Run(PORT)

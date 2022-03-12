@@ -1,0 +1,35 @@
+version: '3.5'
+services:
+  ru-smart-redis:   
+    image: redis:6.0
+    container_name: ru-smart-redis
+    restart: always    
+    ports:
+      - 6000:6379
+    volumes:
+      - ./redis_data:/data
+      - ./redis_config/redis.conf:/redis.conf
+    command: redis-server /redis.conf --requirepass admin-ru-smart --appendonly yes
+    networks:
+      - api-network
+
+  # ru-smart-api:   
+  #   # build: ./
+  #   image: charandetkrathok/ru-smart-api:0.7
+  #   container_name: ru-smart-api
+  #   restart: always  
+  #   depends_on:
+  #     - ru-smart-redis  
+  #   ports:
+  #     - 9100:9100
+  #   networks:
+  #     - api-network
+
+networks:
+  api-network:
+    driver: bridge
+
+     
+# docker run --restart=always  -d --name survey -p 8881:8881 survey-reports-api:latest
+# docker run --name survey-reports-api-redis -p 6379:6379 redis:latest redis-server --requirepass "admin-survey"
+

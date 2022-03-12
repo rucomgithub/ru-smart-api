@@ -1,11 +1,16 @@
 package services
 
-import "RU-Smart-Workspace/ru-smart-api/repositories"
+import (
+	"RU-Smart-Workspace/ru-smart-api/repositories"
+
+	"github.com/go-redis/redis/v8"
+)
 
 type (
 
 	studentServices struct {
 		studentRepo repositories.StudentRepoInterface
+		redis_cache *redis.Client
 	}
 
 	AuthenPlayload struct {
@@ -37,12 +42,36 @@ type (
 		ExpiresRefreshToken string `json:"expiration_refresh_token"`
 	}
 
+	StudentProfileService struct {
+		STD_CODE             string `json:"STD_CODE"`
+		NAME_THAI            string `json:"NAME_THAI"`
+		NAME_ENG             string `json:"NAME_ENG"`
+		BIRTH_DATE           string `json:"BIRTH_DATE"`
+		STD_STATUS_DESC_THAI string `json:"STD_STATUS_DESC_THAI"`
+		CITIZEN_ID           string `json:"CITIZEN_ID"`
+		REGIONAL_NAME_THAI   string `json:"REGIONAL_NAME_THAI"`
+		STD_TYPE_DESC_THAI   string `json:"STD_TYPE_DESC_THAI"`
+		FACULTY_NAME_THAI    string `json:"FACULTY_NAME_THAI"`
+		MAJOR_NAME_THAI      string `json:"MAJOR_NAME_THAI"`
+		WAIVED_NO            string `json:"WAIVED_NO"`
+		WAIVED_PAID          string `json:"WAIVED_PAID"`
+		WAIVED_TOTAL_CREDIT  int    `json:"WAIVED_TOTAL_CREDIT"`
+		CHK_CERT_NAME_THAI   string `json:"CHK_CERT_NAME_THAI"`
+		PENAL_NAME_THAI      string `json:"PENAL_NAME_THAI"`
+		MOBILE_TELEPHONE     string `json:"MOBILE_TELEPHONE"`
+		EMAIL_ADDRESS        string `json:"EMAIL_ADDRESS"`
+	}
+
 	StudentServicesInterface interface {
 		Authentication(stdCode string) (*TokenResponse, error)
+		GetStudentProfile(stdCode string) (*StudentProfileService, error)
 	}
 )
 
-func NewStudentServices(studentRepo repositories.StudentRepoInterface) StudentServicesInterface {
-	return studentServices{studentRepo: studentRepo}
+func NewStudentServices(studentRepo repositories.StudentRepoInterface, redis_cache *redis.Client) StudentServicesInterface {
+	return studentServices{
+		studentRepo: studentRepo,
+		redis_cache: redis_cache,
+	}
 }
 

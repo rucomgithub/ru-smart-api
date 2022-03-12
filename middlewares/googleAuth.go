@@ -14,17 +14,14 @@ var ctx = context.Background()
 
 func GoogleAuth(c *gin.Context) {
 
-	const BEARER_SCHEMA = "Bearer "
-	AUTH_HEADER := c.GetHeader("Authorization")
-	ID_TOKEN := AUTH_HEADER[len(BEARER_SCHEMA):]
-
-	if len(AUTH_HEADER) == 0 {
+	ID_TOKEN, err := getHeaderAuthorization(c)
+	if err != nil {
 		c.IndentedJSON(http.StatusUnauthorized, gin.H{"accessToken": "", "isAuth": false, "message": "authorization key in header not found"})
 		c.Abort()
 		return
 	}
 
-	_, err := verifyGoogleAuth(ID_TOKEN)
+	_, err = verifyGoogleAuth(ID_TOKEN)
 	if err != nil {
 		c.IndentedJSON(http.StatusUnauthorized, gin.H{"accessToken": "", "isAuth": false, "message": "Google is not authorized"})
 		c.Abort()

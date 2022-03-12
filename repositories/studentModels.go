@@ -1,6 +1,8 @@
 package repositories
 
-import "github.com/jmoiron/sqlx"
+import (
+	"github.com/jmoiron/sqlx"
+)
 
 type (
 	studentRepoDB struct {
@@ -40,6 +42,6 @@ type (
 )
 
 func NewStudentRepo(oracle_db *sqlx.DB) StudentRepoInterface {
-	return studentRepoDB{oracle_db: oracle_db}
+	return studentRepoDB{ oracle_db: oracle_db }
 }
 

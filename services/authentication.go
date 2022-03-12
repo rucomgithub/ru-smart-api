@@ -12,7 +12,7 @@ func (s studentServices) Authentication(stdCode string) (*TokenResponse, error) 
 		return nil, err
 	}
 
-	generateToken, err := middlewares.GenerateToken(prepareToken.STD_CODE)
+	generateToken, err := middlewares.GenerateToken(prepareToken.STD_CODE, s.redis_cache)
 	if err != nil {
 		return nil, err
 	}

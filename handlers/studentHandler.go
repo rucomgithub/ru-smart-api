@@ -26,6 +26,7 @@ func (h studentHandlers) Authentication(c *gin.Context) {
 	}
 
 	token, err := h.studentService.Authentication(requestBody.Std_code)
+	
 	if err != nil {
 		c.IndentedJSON(http.StatusUnauthorized, err)
 		c.Abort()
@@ -36,7 +37,7 @@ func (h studentHandlers) Authentication(c *gin.Context) {
 }
 
 func (h studentHandlers) GetStudentProfile(c *gin.Context) {
-	 
+
 	STD_CODE := c.Param("std_code")
 	studentProfileResponse, err := h.studentService.GetStudentProfile(STD_CODE)
 	if err != nil {

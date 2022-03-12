@@ -19,9 +19,6 @@ func init() {
 }
 
 func main() {
-	gin.SetMode(gin.ReleaseMode)
-	router := gin.Default()
-	router.Use(middlewares.NewCorsAccessControl().CorsAccessControl())
 
 	oracle_db, err := databases.NewDatabases().OracleConnection()
 	if err != nil {
@@ -32,9 +29,13 @@ func main() {
 	redis_cache := databases.NewDatabases().RedisConnection()
 	defer redis_cache.Close()
 
+	gin.SetMode(gin.ReleaseMode)
+
+	router := gin.Default()
+	router.Use(middlewares.NewCorsAccessControl().CorsAccessControl())
 
 	studentRepo := repositories.NewStudentRepo(oracle_db)
-	studentService := services.NewStudentServices(studentRepo,redis_cache)
+	studentService := services.NewStudentServices(studentRepo, redis_cache)
 	studentHandler := handlers.NewStudentHandlers(studentService)
 
 	googleAuth := router.Group("/google")
@@ -42,13 +43,12 @@ func main() {
 		googleAuth.POST("/authorization", middlewares.GoogleAuth, studentHandler.Authentication)
 	}
 
-
 	student := router.Group("/student")
 	{
-		student.POST("/refresh-authentication", middlewares.Authorization(redis_cache))
+		student.POST("/refresh-authentication", middlewares.RefreshAuthentication(redis_cache), studentHandler.Authentication)
 		student.GET("/profile/:std_code", middlewares.Authorization(redis_cache), studentHandler.GetStudentProfile)
 	}
 
-    PORT := viper.GetString("ruSmart.port")
+	PORT := viper.GetString("ruSmart.port")
 	router.Run(PORT)
 }

@@ -1,35 +1,64 @@
 version: '3.5'
 services:
-  ru-smart-redis:   
+  ru-smart-caching:   
     image: redis:6.0
-    container_name: ru-smart-redis
+    container_name: ru-smart-caching
     restart: always    
     ports:
       - 6000:6379
     volumes:
       - ./redis_data:/data
       - ./redis_config/redis.conf:/redis.conf
-    command: redis-server /redis.conf --requirepass admin-ru-smart --appendonly yes
+    command: redis-server /redis.conf --requirepass admin-ru-smart-caching --appendonly yes
     networks:
       - api-network
 
-  # ru-smart-api:   
-  #   # build: ./
-  #   image: charandetkrathok/ru-smart-api:0.7
+  # ru-smart-api:
+  #   image: charandetkrathok/ru-smart-api:0.23
   #   container_name: ru-smart-api
-  #   restart: always  
+  #   restart: always
   #   depends_on:
-  #     - ru-smart-redis  
+  #     - ru-smart-caching
   #   ports:
-  #     - 9100:9100
+  #     - 8883:8883
   #   networks:
   #     - api-network
+
+  ru-smart-api-no1:
+    image: charandetkrathok/ru-smart-api:0.24
+    container_name: ru-smart-api-no1
+    restart: always
+    depends_on:
+      - ru-smart-caching
+    ports:
+      - 9111:8883
+    networks:
+      - api-network
+
+  ru-smart-api-no2:
+    image: charandetkrathok/ru-smart-api:0.24
+    container_name: ru-smart-api-no2
+    restart: always
+    depends_on:
+      - ru-smart-caching
+    ports:
+      - 9112:8883
+    networks:
+      - api-network
+
+  ru-smart-api-no3:
+    image: charandetkrathok/ru-smart-api:0.24
+    container_name: ru-smart-api-no3
+    restart: always
+    depends_on:
+      - ru-smart-caching
+    ports:
+      - 9113:8883
+    networks:
+      - api-network
 
 networks:
   api-network:
     driver: bridge
 
-     
-# docker run --restart=always  -d --name survey -p 8881:8881 survey-reports-api:latest
-# docker run --name survey-reports-api-redis -p 6379:6379 redis:latest redis-server --requirepass "admin-survey"
-
+    

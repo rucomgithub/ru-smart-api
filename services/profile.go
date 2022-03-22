@@ -51,7 +51,7 @@ func (s studentServices) GetStudentProfile(studentCode string) (studentProfileRe
 
 	studentProfileJSON, _ := json.Marshal(studentProfileResponse)
 	timeNow := time.Now()
-	redisCacheStudentProfile := time.Unix(timeNow.Add(time.Second*20).Unix(), 0)
+	redisCacheStudentProfile := time.Unix(timeNow.Add(time.Minute*20).Unix(), 0)
 	_ = s.redis_cache.Set(ctx, key, studentProfileJSON, redisCacheStudentProfile.Sub(timeNow)).Err()
 
 	return studentProfileResponse, nil

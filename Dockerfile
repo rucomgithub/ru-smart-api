@@ -28,7 +28,7 @@ RUN go mod download
 
 COPY . ./
 RUN go build -o main .
-EXPOSE 8882
+EXPOSE 8883
 CMD [ "/app/main" ]
 
 

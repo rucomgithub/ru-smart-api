@@ -17,9 +17,9 @@ type (
 	}
 
 	TokenResponse struct {
-		AccessToken     string `json:"access_token"`
-		RefreshToken    string `json:"refresh_token"`
-		IsAuth          bool   `json:"is_auth"`
+		AccessToken     string `json:"accessToken"`
+		RefreshToken    string `json:"refreshToken"`
+		IsAuth          bool   `json:"isAuth"`
 		AccessTokenKey  string `json:"access_token_key"`
 		RefreshTokenKey string `json:"refresh_token_key"`
 	}
@@ -45,11 +45,11 @@ func getHeaderAuthorization(c *gin.Context) (token string, err error) {
 
 	const BEARER_SCHEMA = "Bearer "
 	AUTH_HEADER := c.GetHeader("Authorization")
-
+	
 	if len(AUTH_HEADER) == 0 {
 		return "", err
 	}
-
+	
 	if strings.HasPrefix(AUTH_HEADER, BEARER_SCHEMA) {
 		token = AUTH_HEADER[len(BEARER_SCHEMA):]
 		return token, nil
@@ -59,7 +59,7 @@ func getHeaderAuthorization(c *gin.Context) (token string, err error) {
 
 }
 
-func verifyToken(preTokenKey string, token string, redis_cache *redis.Client) (bool, error) {
+func VerifyToken(preTokenKey string, token string, redis_cache *redis.Client) (bool, error) {
 
 	claims, err := getClaims(token)
 	if err != nil {

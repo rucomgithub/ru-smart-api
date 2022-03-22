@@ -1,10 +1,26 @@
 package services
 
+import (
+	"context"
+	"encoding/json"
+	"time"
+)
+
+var ctx = context.Background()
+
 func (s studentServices) GetStudentProfile(studentCode string) (studentProfileResponse *StudentProfileService, err error) {
 
 	student := StudentProfileService{}
 
 	STUDENT_CODE := studentCode
+
+	key :=  STUDENT_CODE+"::profile"
+	studentCache, err := s.redis_cache.Get(ctx,key).Result()
+	if err == nil {
+
+		_ = json.Unmarshal([]byte(studentCache), &student)
+		return &student, nil
+	}
 
 	sp, err := s.studentRepo.GetStudentProfile(STUDENT_CODE)
 	if err != nil {
@@ -32,6 +48,11 @@ func (s studentServices) GetStudentProfile(studentCode string) (studentProfileRe
 	}
 
 	studentProfileResponse = &student
+
+	studentProfileJSON, _ := json.Marshal(studentProfileResponse)
+	timeNow := time.Now()
+	redisCacheStudentProfile := time.Unix(timeNow.Add(time.Second*20).Unix(), 0)
+	_ = s.redis_cache.Set(ctx, key, studentProfileJSON, redisCacheStudentProfile.Sub(timeNow)).Err()
 
 	return studentProfileResponse, nil
 }

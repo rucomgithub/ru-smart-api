@@ -2,7 +2,6 @@ package services
 
 import (
 	"RU-Smart-Workspace/ru-smart-api/middlewares"
-	"log"
 )
 
 func (s studentServices) Authentication(stdCode string) (*TokenResponse, error) {
@@ -16,13 +15,6 @@ func (s studentServices) Authentication(stdCode string) (*TokenResponse, error) 
 	if err != nil {
 		return nil, err
 	}
-
-	log.Println("--------- in services -----------")
-	log.Println("--------- AccessToken -----------")
-	log.Println("AccessToken :: ", generateToken.AccessToken)
-	log.Println("--------- RefreshToken ----------")
-	log.Println("RefreshToken :: ", generateToken.RefreshToken)
-	log.Println("---------------------------------")
 
 	studentTokenResponse := TokenResponse{
 		AccessToken  : generateToken.AccessToken,

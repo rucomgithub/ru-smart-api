@@ -45,7 +45,7 @@ func main() {
 
 	student := router.Group("/student")
 	{
-		student.POST("/refresh-authentication", middlewares.RefreshAuthentication(redis_cache), studentHandler.Authentication)
+		student.POST("/refresh-authentication", studentHandler.RefreshAuthentication)
 		student.GET("/profile/:std_code", middlewares.Authorization(redis_cache), studentHandler.GetStudentProfile)
 	}
 

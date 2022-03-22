@@ -15,12 +15,13 @@ type (
 
 	AuthenPlayload struct {
 		Std_code string `json:"std_code"`
+		Refresh_token string `json:"refresh_token"`
 	}
 
 	TokenResponse struct {
-		AccessToken  string `json:"access_token_id"`
-		RefreshToken string `json:"refresh_token_id"`
-		IsAuth       bool   `json:"is_auth"`
+		AccessToken  string `json:"accessToken"`
+		RefreshToken string `json:"refreshToken"`
+		IsAuth       bool   `json:"isAuth"`
 		Message      string `json:"message"`
 		StatusCode   int    `json:"status_code"`
 	}
@@ -64,6 +65,7 @@ type (
 
 	StudentServicesInterface interface {
 		Authentication(stdCode string) (*TokenResponse, error)
+		RefreshAuthentication(refreshToken, stdCode string) (*TokenResponse, error)
 		GetStudentProfile(stdCode string) (*StudentProfileService, error)
 	}
 )

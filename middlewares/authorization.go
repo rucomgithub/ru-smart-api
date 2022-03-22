@@ -18,7 +18,7 @@ func Authorization(redis_cache *redis.Client) gin.HandlerFunc {
 		}
 
 		// ส่ง Token ไปตรวจสอบว่าได้รับสิทธิ์เข้าใช้งานหรือไม่
-		isToken, err := verifyToken("accessToken",token, redis_cache)
+		isToken, err := VerifyToken("accessToken",token, redis_cache)
 		if err != nil {
 			fmt.Println(err)
 			c.IndentedJSON(http.StatusUnauthorized, err)

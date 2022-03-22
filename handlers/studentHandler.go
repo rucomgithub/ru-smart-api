@@ -26,9 +26,28 @@ func (h studentHandlers) Authentication(c *gin.Context) {
 	}
 
 	token, err := h.studentService.Authentication(requestBody.Std_code)
-	
+
 	if err != nil {
 		c.IndentedJSON(http.StatusUnauthorized, err)
+		c.Abort()
+	}
+
+	c.IndentedJSON(http.StatusOK, token)
+
+}
+func (h studentHandlers) RefreshAuthentication(c *gin.Context) {
+
+	var requestBody services.AuthenPlayload
+
+	err := c.ShouldBindJSON(&requestBody)
+	if err != nil {
+		c.IndentedJSON(http.StatusUnprocessableEntity, err)
+		c.Abort()
+	}
+
+	token, err := h.studentService.RefreshAuthentication(requestBody.Refresh_token,requestBody.Std_code)
+	if err != nil {
+		c.IndentedJSON(http.StatusUnprocessableEntity, err)
 		c.Abort()
 	}
 

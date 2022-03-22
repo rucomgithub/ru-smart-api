@@ -3,7 +3,6 @@ package middlewares
 import (
 	"encoding/json"
 	"fmt"
-	"log"
 	"time"
 
 	"github.com/dgrijalva/jwt-go/v4"
@@ -12,8 +11,6 @@ import (
 )
 
 func GenerateToken(stdCode string, redis_cache *redis.Client) (*TokenResponse, error) {
-
-	log.Println(redis_cache)
 
 	generateToken := &TokenResponse{}
 	expirationAccessToken := time.Now().AddDate(0, 0, 1).Unix()

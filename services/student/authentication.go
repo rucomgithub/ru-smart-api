@@ -1,4 +1,4 @@
-package services
+package student_services
 
 import (
 	"RU-Smart-Workspace/ru-smart-api/middlewares"

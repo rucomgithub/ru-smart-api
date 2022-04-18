@@ -3,10 +3,11 @@ package main
 import (
 	"RU-Smart-Workspace/ru-smart-api/databases"
 	"RU-Smart-Workspace/ru-smart-api/environments"
+
 	"RU-Smart-Workspace/ru-smart-api/handlers"
 	"RU-Smart-Workspace/ru-smart-api/middlewares"
-	"RU-Smart-Workspace/ru-smart-api/repositories"
-	"RU-Smart-Workspace/ru-smart-api/services"
+	student_repositories "RU-Smart-Workspace/ru-smart-api/repositories/student"
+	student_services "RU-Smart-Workspace/ru-smart-api/services/student"
 
 	"github.com/gin-gonic/gin"
 	_ "github.com/godror/godror"
@@ -19,6 +20,9 @@ func init() {
 }
 
 func main() {
+
+
+
 
 	oracle_db, err := databases.NewDatabases().OracleConnection()
 	if err != nil {
@@ -34,8 +38,8 @@ func main() {
 	router := gin.Default()
 	router.Use(middlewares.NewCorsAccessControl().CorsAccessControl())
 
-	studentRepo := repositories.NewStudentRepo(oracle_db)
-	studentService := services.NewStudentServices(studentRepo, redis_cache)
+	studentRepo := student_repositories.NewStudentRepo(oracle_db)
+	studentService := student_services.NewStudentServices(studentRepo, redis_cache)
 	studentHandler := handlers.NewStudentHandlers(studentService)
 
 	googleAuth := router.Group("/google")

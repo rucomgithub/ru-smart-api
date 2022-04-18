@@ -1,7 +1,7 @@
-package services
+package student_services
 
 import (
-	"RU-Smart-Workspace/ru-smart-api/repositories"
+	student_repositories "RU-Smart-Workspace/ru-smart-api/repositories/student"
 
 	"github.com/go-redis/redis/v8"
 )
@@ -9,7 +9,7 @@ import (
 type (
 
 	studentServices struct {
-		studentRepo repositories.StudentRepoInterface
+		studentRepo student_repositories.StudentRepoInterface
 		redis_cache *redis.Client
 	}
 
@@ -70,7 +70,7 @@ type (
 	}
 )
 
-func NewStudentServices(studentRepo repositories.StudentRepoInterface, redis_cache *redis.Client) StudentServicesInterface {
+func NewStudentServices(studentRepo student_repositories.StudentRepoInterface, redis_cache *redis.Client) StudentServicesInterface {
 	return studentServices{
 		studentRepo: studentRepo,
 		redis_cache: redis_cache,

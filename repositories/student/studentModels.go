@@ -1,4 +1,4 @@
-package repositories
+package student_repositories
 
 import (
 	"github.com/jmoiron/sqlx"

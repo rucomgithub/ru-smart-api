@@ -1,4 +1,4 @@
-package repositories
+package student_repositories
 
 func (r studentRepoDB) Authentication(studentCode string) (token *PrepareTokenRepo, err error) {
 

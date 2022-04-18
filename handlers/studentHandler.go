@@ -1,23 +1,23 @@
 package handlers
 
 import (
-	"RU-Smart-Workspace/ru-smart-api/services"
+	student_services "RU-Smart-Workspace/ru-smart-api/services/student"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
 
 type studentHandlers struct {
-	studentService services.StudentServicesInterface
+	studentService student_services.StudentServicesInterface
 }
 
-func NewStudentHandlers(studentService services.StudentServicesInterface) studentHandlers {
+func NewStudentHandlers(studentService student_services.StudentServicesInterface) studentHandlers {
 	return studentHandlers{studentService: studentService}
 }
 
 func (h studentHandlers) Authentication(c *gin.Context) {
 
-	var requestBody services.AuthenPlayload
+	var requestBody student_services.AuthenPlayload
 
 	err := c.ShouldBindJSON(&requestBody)
 	if err != nil {
@@ -37,7 +37,7 @@ func (h studentHandlers) Authentication(c *gin.Context) {
 }
 func (h studentHandlers) RefreshAuthentication(c *gin.Context) {
 
-	var requestBody services.AuthenPlayload
+	var requestBody student_services.AuthenPlayload
 
 	err := c.ShouldBindJSON(&requestBody)
 	if err != nil {

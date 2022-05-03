@@ -4,8 +4,7 @@ import (
 	"RU-Smart-Workspace/ru-smart-api/middlewares"
 )
 
-func (s studentServices) RefreshAuthentication(refreshToken, stdCode string) (*TokenResponse, error) {
-
+func (s *studentServices) RefreshAuthentication(refreshToken, stdCode string) (*TokenResponse, error) {
 
 	// ส่ง Token ไปตรวจสอบว่าได้รับสิทธิ์เข้าใช้งานหรือไม่
 	isToken, err := middlewares.VerifyToken("refreshToken", refreshToken, s.redis_cache)

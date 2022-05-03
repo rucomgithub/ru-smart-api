@@ -8,7 +8,7 @@ import (
 
 var ctx = context.Background()
 
-func (s studentServices) GetStudentProfile(studentCode string) (studentProfileResponse *StudentProfileService, err error) {
+func (s *studentServices) GetStudentProfile(studentCode string) (studentProfileResponse *StudentProfileService, err error) {
 
 	student := StudentProfileService{}
 

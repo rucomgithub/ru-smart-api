@@ -4,7 +4,7 @@ import (
 	"RU-Smart-Workspace/ru-smart-api/middlewares"
 )
 
-func (s studentServices) Authentication(stdCode string) (*TokenResponse, error) {
+func (s *studentServices) Authentication(stdCode string) (*TokenResponse, error) {
 
 	prepareToken, err := s.studentRepo.Authentication(stdCode)
 	if err != nil || prepareToken.STATUS != 1 {  

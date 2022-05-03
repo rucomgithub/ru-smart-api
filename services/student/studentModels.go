@@ -71,7 +71,7 @@ type (
 )
 
 func NewStudentServices(studentRepo student_repositories.StudentRepoInterface, redis_cache *redis.Client) StudentServicesInterface {
-	return studentServices{
+	return &studentServices{
 		studentRepo: studentRepo,
 		redis_cache: redis_cache,
 	}

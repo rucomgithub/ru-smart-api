@@ -9,13 +9,13 @@ import (
 
 func EnvironmentInit() {
 	// ไฟล์ที่จะจัดเก็บตัว Connection string Database
-	viper.SetConfigName("environments")
+	viper.SetConfigName("config")
 	// ภาษาที่จะใช้ในการ Config
 	viper.SetConfigType("yaml")
-	// ที่อยู่ของ file config เริ่มค้นหาจาก root ด้านนอกสุด
-	viper.AddConfigPath("./environments")
 	// แล้วเข้ามาที่ environment folder
-	viper.AddConfigPath("environments")
+	viper.AddConfigPath("./environments")
+	// ที่อยู่ของ file config เริ่มค้นหาจาก root ด้านนอกสุด
+	viper.AddConfigPath(".")
 
 	viper.AutomaticEnv()
 	viper.GetViper().SetEnvKeyReplacer(strings.NewReplacer(".", "_"))

@@ -10,9 +10,9 @@ import (
 
 func Authorization(redis_cache *redis.Client) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		token, err := getHeaderAuthorization(c)
+		token, err := GetHeaderAuthorization(c)
 		if err != nil {
-			c.IndentedJSON(http.StatusUnauthorized, gin.H{"message": "authorization key in header not found"})
+			c.IndentedJSON(http.StatusUnauthorized, gin.H{"message": "Authorization key in header not found"})
 			c.Abort()
 			return
 		}
@@ -21,7 +21,7 @@ func Authorization(redis_cache *redis.Client) gin.HandlerFunc {
 		isToken, err := VerifyToken("accessToken",token, redis_cache)
 		if err != nil {
 			fmt.Println(err)
-			c.IndentedJSON(http.StatusUnauthorized, err)
+			c.IndentedJSON(http.StatusUnauthorized, gin.H{"message":"Authorization falil because of timeout."})
 			c.Abort()
 			return
 		}

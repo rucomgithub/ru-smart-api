@@ -7,6 +7,7 @@ import (
 
 	"github.com/dgrijalva/jwt-go/v4"
 	"github.com/go-redis/redis/v8"
+	"github.com/google/uuid"
 	"github.com/spf13/viper"
 )
 
@@ -18,12 +19,12 @@ func GenerateToken(stdCode string, redis_cache *redis.Client) (*TokenResponse, e
 	expirationRefreshToken := time.Now().AddDate(0, 1, 0).Unix()
 
 	generateToken.IsAuth = true
-	generateToken.AccessTokenKey = stdCode + "::access"
-	generateToken.RefreshTokenKey = stdCode + "::refresh"
+	generateToken.AccessTokenKey = stdCode + "::access::" + uuid.New().String()
+	generateToken.RefreshTokenKey = stdCode + "::refresh::" + uuid.New().String()
 
 	// ---------------------  Create Access Token  ----------------------------------------- //
 	accessTokenClaims := jwt.MapClaims{}
-	accessTokenClaims["issuer"] = "Ru-Smart"
+	accessTokenClaims["issuer"] = viper.GetString("token.issuer")
 	accessTokenClaims["subject"] = "Ru-Smart" + stdCode
 	accessTokenClaims["role"] = ""
 	accessTokenClaims["expires_token"] = expirationAccessToken
@@ -40,7 +41,7 @@ func GenerateToken(stdCode string, redis_cache *redis.Client) (*TokenResponse, e
 
 	// ---------------------  Create Refresh Token  ----------------------------------------- //
 	refreshTokenClaims := jwt.MapClaims{}
-	refreshTokenClaims["issuer"] = "Ru-Smart"
+	refreshTokenClaims["issuer"] = viper.GetString("token.issuer")
 	refreshTokenClaims["subject"] = "Ru-Smart::" + stdCode
 	refreshTokenClaims["role"] = ""
 	refreshTokenClaims["expires_token"] = expirationRefreshToken
@@ -66,13 +67,12 @@ func GenerateToken(stdCode string, redis_cache *redis.Client) (*TokenResponse, e
 	
 	cacheDataJson, _ := json.Marshal(cacheStudent)
 
-	// convertion Unix to UTC(to time object)
 	redisCacheExpiresAccessToken := time.Unix(expirationAccessToken, 0)
 	err = redis_cache.Set(ctx, fmt.Sprint(generateToken.AccessTokenKey), cacheDataJson, redisCacheExpiresAccessToken.Sub(timeNow)).Err()
 	if err != nil {
 		return nil, err
 	}
-	// convertion Unix to UTC(to time object)
+
 	redisCacheExpiresRefreshToken := time.Unix(expirationRefreshToken, 0)
 	err = redis_cache.Set(ctx, fmt.Sprint(generateToken.RefreshTokenKey), cacheDataJson, redisCacheExpiresRefreshToken.Sub(timeNow)).Err()
 	if err != nil {

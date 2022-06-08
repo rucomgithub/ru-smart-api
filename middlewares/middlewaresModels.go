@@ -41,15 +41,15 @@ type (
 
 // ทำการแกะ header HTTP request
 // Authorization: Bearer TOKEN
-func getHeaderAuthorization(c *gin.Context) (token string, err error) {
+func GetHeaderAuthorization(c *gin.Context) (token string, err error) {
 
 	const BEARER_SCHEMA = "Bearer "
 	AUTH_HEADER := c.GetHeader("Authorization")
-	
+
 	if len(AUTH_HEADER) == 0 {
 		return "", err
 	}
-	
+
 	if strings.HasPrefix(AUTH_HEADER, BEARER_SCHEMA) {
 		token = AUTH_HEADER[len(BEARER_SCHEMA):]
 		return token, nil
@@ -61,7 +61,7 @@ func getHeaderAuthorization(c *gin.Context) (token string, err error) {
 
 func VerifyToken(preTokenKey string, token string, redis_cache *redis.Client) (bool, error) {
 
-	claims, err := getClaims(token)
+	claims, err := GetClaims(token)
 	if err != nil {
 		return false, err
 	}
@@ -79,7 +79,7 @@ func VerifyToken(preTokenKey string, token string, redis_cache *redis.Client) (b
 	return true, nil
 }
 
-func getClaims(encodedToken string) (*ClaimsToken, error) {
+func GetClaims(encodedToken string) (*ClaimsToken, error) {
 
 	parseToken, err := jwt.Parse(encodedToken, func(token *jwt.Token) (interface{}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
@@ -121,4 +121,17 @@ func getClaims(encodedToken string) (*ClaimsToken, error) {
 	}
 
 	return claimsToken, nil
+}
+
+func RevokeToken(token string, redis_cache *redis.Client) (bool) {
+
+	claims, err := GetClaims(token)
+	if err != nil {
+		return false
+	}
+
+	redis_cache.Del(ctx, claims.AccessTokenKey).Result()
+	redis_cache.Del(ctx, claims.RefreshTokenKey).Result()
+
+	return true
 }

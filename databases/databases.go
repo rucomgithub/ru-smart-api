@@ -15,7 +15,19 @@ func NewDatabases() *connection {
 	return &connection{}
 }
 
-func (c *connection) RedisConnection() *redis.Client {
+func (c *connection) OracleInit() *sqlx.DB {
+	db, err := oracleConnection()
+	if err != nil {
+		panic(err)
+	}
+	return db
+}
+
+func (c *connection) RedisInint() *redis.Client {
+	return redisConnection()
+}
+
+func redisConnection() *redis.Client {
 	return redis.NewClient(&redis.Options{
 		Addr: viper.GetString("redis_cache.addressLocal"),
 		// Addr: viper.GetString("redis_cache.address"),
@@ -24,7 +36,7 @@ func (c *connection) RedisConnection() *redis.Client {
 	})
 }
 
-func (c *connection) OracleConnection() (*sqlx.DB, error) {
+func oracleConnection() (*sqlx.DB, error) {
 
 	dns := fmt.Sprintf("%v", viper.GetString("db.connection"))
 	driver := viper.GetString("db.openDriver")
@@ -32,3 +44,4 @@ func (c *connection) OracleConnection() (*sqlx.DB, error) {
 	return sqlx.Open(driver, dns)
 
 }
+

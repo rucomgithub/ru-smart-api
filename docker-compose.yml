@@ -1,3 +1,4 @@
+
 version: '3.5'
 services:
   ru-smart-caching:   
@@ -10,63 +11,24 @@ services:
       - ./redis_data:/data
       - ./redis_config/redis.conf:/redis.conf
     command: redis-server /redis.conf --requirepass admin-ru-smart-caching --appendonly yes
-    networks:
-      - api-network
-      
-networks:
-  api-network:
-    driver: bridge
+
 
   # ru-smart-api:
-    # image: charandetkrathok/ru-smart-api:0.23
-  #   image: ru-smart-api:v10
-  #   container_name: ru-smart-api
-  #   restart: always
-  #   depends_on:
-  #     - ru-smart-caching
-  #   ports:
-  #     - 8883:8883
-  #   networks:
-  #     - api-network
-    
+  #   build: 
+  #     context: .
+  #     dockerfile: Dockerfile
+    # image: charandetkrathok/ru-smart-api:0.6
+    # container_name: ru-smart-api
+    # restart: always
+    # depends_on:
+    #   - ru-smart-caching
+    # ports:
+    #   - 8883:8883
 
-  # ru-smart-api-no1:
-  #   image: charandetkrathok/ru-smart-api:0.24
-  #   container_name: ru-smart-api-no1
-  #   restart: always
-  #   depends_on:
-  #     - ru-smart-caching
-  #   ports:
-  #     - 9111:8883
-  #   networks:
-  #     - api-network
-
-  # ru-smart-api-no2:
-  #   image: charandetkrathok/ru-smart-api:0.24
-  #   container_name: ru-smart-api-no2
-  #   restart: always
-  #   depends_on:
-  #     - ru-smart-caching
-  #   ports:
-  #     - 9112:8883
-  #   networks:
-  #     - api-network
-
-  # ru-smart-api-no3:
-  #   image: charandetkrathok/ru-smart-api:0.24
-  #   container_name: ru-smart-api-no3
-  #   restart: always
-  #   depends_on:
-  #     - ru-smart-caching
-  #   ports:
-  #     - 9113:8883
-  #   networks:
-  #     - api-network
-
-# networks:
-#   api-network:
-#     driver: bridge
-
-
+networks:
+  default:
+    external: 
+      name: backend-services
 
     
+# docker-compose up --scale ru-smart-api=3

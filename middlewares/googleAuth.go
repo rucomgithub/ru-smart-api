@@ -14,7 +14,7 @@ var ctx = context.Background()
 
 func GoogleAuth(c *gin.Context) {
 
-	ID_TOKEN, err := getHeaderAuthorization(c)
+	ID_TOKEN, err := GetHeaderAuthorization(c)
 	if err != nil {
 		c.IndentedJSON(http.StatusUnauthorized, gin.H{"accessToken": "", "isAuth": false, "message": "authorization key in header not found"})
 		c.Abort()

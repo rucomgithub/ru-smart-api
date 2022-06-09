@@ -50,7 +50,6 @@ func (h *studentHandlers) Authentication(c *gin.Context) {
 	}
 
 	tokenResponse, err := h.studentService.Authentication(requestBody.Std_code)
-
 	if err != nil {
 		c.IndentedJSON(http.StatusUnprocessableEntity, tokenResponse)
 		c.Abort()
@@ -139,4 +138,24 @@ func (h *studentHandlers) GetStudentProfile(c *gin.Context) {
 
 	c.IndentedJSON(http.StatusOK, studentProfileResponse)
 
+}
+
+func (h *studentHandlers) GetRegister(c *gin.Context) {
+	
+	var payload students.RegisterPlayload
+	err := c.ShouldBindJSON(&payload)
+	if err != nil {
+		c.IndentedJSON(http.StatusUnprocessableEntity, gin.H{"message":"Authorization fail becourse content type not json format."})
+		c.Abort()
+		return
+	}
+
+	registerResponse, err := h.studentService.GetRegister(payload.Std_code, payload.Course_year, payload.Course_semester)
+	if err != nil {
+		c.IndentedJSON(http.StatusNoContent, registerResponse)
+		c.Abort()
+		return
+	}
+
+	c.IndentedJSON(http.StatusOK, registerResponse)
 }

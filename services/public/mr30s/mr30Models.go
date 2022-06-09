@@ -2,9 +2,12 @@ package mr30s
 
 import (
 	mr30r "RU-Smart-Workspace/ru-smart-api/repositories/public/mr30r"
+	"context"
 
 	"github.com/go-redis/redis/v8"
 )
+
+var ctx = context.Background()
 
 type (
 	
@@ -50,6 +53,8 @@ type (
 
 	Mr30ServiceInterface interface {
 		GetMr30(course_year, course_semester string) (*Mr30Response, error)
+		GetMr30Searching(course_year, course_semester, course_no string) (*Mr30Response, error)
+		GetMr30Pagination(course_year, course_semester, limit, offset string) (*Mr30Response, error)
 	}
 )
 

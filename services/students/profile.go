@@ -1,12 +1,9 @@
 package students
 
 import (
-	"context"
 	"encoding/json"
 	"time"
 )
-
-var ctx = context.Background()
 
 func (s *studentServices) GetStudentProfile(studentCode string) (studentProfileResponse *StudentProfileService, err error) {
 

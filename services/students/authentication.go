@@ -17,7 +17,7 @@ func (s *studentServices) Authentication(stdCode string) (*TokenResponse, error)
 
 	prepareToken, err := s.studentRepo.Authentication(stdCode)
 	if err != nil || prepareToken.STATUS != 1 {  
-		studentTokenResponse.Message = "Don't Authenticated token becourse Not found student code in database."
+		studentTokenResponse.Message = "สถานะภาพการเป็นนักศึกษาของท่าน (จบการศึกษา,หมดสถานภาพ,ขาดการลงทะเบียนเรียน 2 ภาคการศึกษาขึ้นไป)."
 		return &studentTokenResponse, err
 	}
 

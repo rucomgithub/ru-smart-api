@@ -1,7 +1,5 @@
 package mr30r
 
-import "log"
-
 func (r *mr30RepoDB) GetMr30(course_year, course_semester string) (*[]Mr30Repo, error) {
 
 	mr30_info := []Mr30Repo{}
@@ -10,7 +8,6 @@ func (r *mr30RepoDB) GetMr30(course_year, course_semester string) (*[]Mr30Repo, 
 	err := r.oracle_db.Select(&mr30_info, query, course_year, course_semester, course_year, course_semester, course_year, course_semester, course_year, course_semester, course_year, course_semester)
 
 	if err != nil {
-		log.Println(err)
 		return nil, err
 	}
 

@@ -49,6 +49,8 @@ func Setup(router *gin.Engine, oracle_db *sqlx.DB, redis_cache *redis.Client ) {
 		student.POST("/refresh-authentication", studentHandler.RefreshAuthentication)
 		student.POST("/unauthorization", studentHandler.Unauthorization)
 		student.GET("/profile/:std_code", middlewares.Authorization(redis_cache), studentHandler.GetStudentProfile)
+		student.GET("/register", middlewares.Authorization(redis_cache), studentHandler.GetRegister)
+	
 	}
 
 
@@ -59,7 +61,9 @@ func Setup(router *gin.Engine, oracle_db *sqlx.DB, redis_cache *redis.Client ) {
 		mr30Service := mr30s.NewMr30Services(mr30Repo, redis_cache)
 		mr30Handler := mr30h.NewMr30Handlers(mr30Service)
 		
-		mr30.POST("/data", mr30Handler.GetMr30)
+		mr30.GET("/data", mr30Handler.GetMr30)
+		mr30.GET("/data/search", mr30Handler.GetMr30Searching)
+		mr30.GET("/data/pagination", mr30Handler.GetMr30Pagination)
 	}
 
 	PORT := viper.GetString("ruSmart.port")

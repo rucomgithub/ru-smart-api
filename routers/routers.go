@@ -61,7 +61,8 @@ func Setup(router *gin.Engine, oracle_db *sqlx.DB, redis_cache *redis.Client ) {
 		mr30Service := mr30s.NewMr30Services(mr30Repo, redis_cache)
 		mr30Handler := mr30h.NewMr30Handlers(mr30Service)
 		
-		mr30.GET("/data", mr30Handler.GetMr30)
+		// mr30.GET("/data", mr30Handler.GetMr30)
+		mr30.POST("/data", mr30Handler.GetMr30)
 		mr30.GET("/data/search", mr30Handler.GetMr30Searching)
 		mr30.GET("/data/pagination", mr30Handler.GetMr30Pagination)
 	}

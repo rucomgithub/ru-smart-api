@@ -21,7 +21,7 @@ import (
 func Setup(router *gin.Engine, oracle_db *sqlx.DB, redis_cache *redis.Client ) {
 
 	router.Use(middlewares.NewCorsAccessControl().CorsAccessControl())
-
+	
 	router.GET("/healthz", func(c *gin.Context) {
 		c.IndentedJSON(http.StatusOK, gin.H{
 			"status":"200", 

@@ -26,6 +26,6 @@ func main() {
 	defer redis_cache.Close()
 
 	gin.SetMode(gin.ReleaseMode)
-	route := gin.Default()
-	routers.Setup(route, oracle_db, redis_cache)
+	router := gin.Default()
+	routers.Setup(router, oracle_db, redis_cache)
 }

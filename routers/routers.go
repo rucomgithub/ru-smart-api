@@ -18,14 +18,14 @@ import (
 	"RU-Smart-Workspace/ru-smart-api/services/public/mr30s"
 )
 
-func Setup(router *gin.Engine, oracle_db *sqlx.DB, redis_cache *redis.Client ) {
+func Setup(router *gin.Engine, oracle_db *sqlx.DB, redis_cache *redis.Client) {
 
 	router.Use(middlewares.NewCorsAccessControl().CorsAccessControl())
-	
+
 	router.GET("/healthz", func(c *gin.Context) {
 		c.IndentedJSON(http.StatusOK, gin.H{
-			"status":"200", 
-			"message":"The service works normally.",
+			"status":  "200",
+			"message": "The service works normally.",
 		})
 	})
 
@@ -37,7 +37,7 @@ func Setup(router *gin.Engine, oracle_db *sqlx.DB, redis_cache *redis.Client ) {
 
 		googleAuth.POST("/authorization", middlewares.GoogleAuth, studentHandler.Authentication)
 		googleAuth.POST("/authorization-test", studentHandler.AuthenticationTest)
-		googleAuth.POST("/authorization-redirect", studentHandler.AuthenticationRedirect)		
+		googleAuth.POST("/authorization-redirect", studentHandler.AuthenticationRedirect)
 	}
 
 	student := router.Group("/student")
@@ -50,17 +50,16 @@ func Setup(router *gin.Engine, oracle_db *sqlx.DB, redis_cache *redis.Client ) {
 		student.POST("/unauthorization", studentHandler.Unauthorization)
 		student.GET("/profile/:std_code", middlewares.Authorization(redis_cache), studentHandler.GetStudentProfile)
 		student.GET("/register", middlewares.Authorization(redis_cache), studentHandler.GetRegister)
-	
-	}
 
+	}
 
 	mr30 := router.Group("/mr30")
 	{
-		
+
 		mr30Repo := mr30r.NewMr30Repo(oracle_db)
 		mr30Service := mr30s.NewMr30Services(mr30Repo, redis_cache)
 		mr30Handler := mr30h.NewMr30Handlers(mr30Service)
-		
+
 		// mr30.GET("/data", mr30Handler.GetMr30)
 		mr30.POST("/data", mr30Handler.GetMr30)
 		mr30.GET("/data/search", mr30Handler.GetMr30Searching)

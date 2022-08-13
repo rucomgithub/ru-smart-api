@@ -1,12 +1,12 @@
 ruSmart: 
-  port: ":8883"
+  port: ":xxxxxxxx"
 
 db: 
   openDriver: "godror"
   connection: 
-    "user=\"rusmart\" 
-     password=\"ru5mart65#\" 
-     connectString=\"10.2.1.98:1571/RUBRAM?expire_timconnect_time=2\"
+    "user=\"xxxxxxxx\" 
+     password=\"xxxxxxxx\" 
+     connectString=\"xxxxxxxx?expire_timconnect_time=2\"
      sysdba=0
      sysoper=0
      poolMinSessions=1
@@ -23,13 +23,12 @@ db:
      timezone=\"local\""
  
 redis_cache:
-  addressLocal: "localhost:6000" 
-  # addressLocal: "127.0.0.1:6000" 
-  # addressLocal: "192.168.43.20:6000" 
-  address: "ru-smart-caching:6379"
-  password: "admin-ru-smart-caching"
+  addressLocal: "localhost:xxxxxxxx" 
+  # addressLocal: "127.0.0.1:xxxxxxxx" 
+  address: "xxxxxxxx:6379"
+  password: "xxxxxxxx"
   db-num: 0
 
 token: 
-  issuer: "Ru-Smart"
-  secretKey: "R#u#-#S#m#a#r#t"
+  issuer: "xxxxxxxx"
+  secretKey: "xxxxxxxx"

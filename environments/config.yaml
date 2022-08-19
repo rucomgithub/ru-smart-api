@@ -24,12 +24,22 @@ db:
  
 redis_cache:
   addressLocal: "localhost:6000" 
-  # addressLocal: "127.0.0.1:6000" 
-  # addressLocal: "192.168.43.20:6000" 
   address: "ru-smart-caching:6379"
   password: "admin-ru-smart-caching"
   db-num: 0
 
 token: 
-  issuer: "Ru-Smart"
+  issuer: "Ru-smart"
   secretKey: "R#u#-#S#m#a#r#t"
+
+# redis_cache:
+#   addressLocal: "localhost:6000" 
+#   # addressLocal: "127.0.0.1:6000" 
+#   # addressLocal: "192.168.43.20:6000" 
+#   address: "ru-connext-caching:6379"
+#   password: "admin-ru-connext-caching"
+#   db-num: 0
+
+# token: 
+#   issuer: "Ru-connext"
+#   secretKey: "R#u#-#S#m#a#r#t"

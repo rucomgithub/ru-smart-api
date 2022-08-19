@@ -30,7 +30,7 @@ func (c *connection) RedisInint() *redis.Client {
 func redisConnection() *redis.Client {
 	return redis.NewClient(&redis.Options{
 		Addr: viper.GetString("redis_cache.addressLocal"),
-		// Addr: viper.GetString("redis_cache.address"),
+		// Addr:     viper.GetString("redis_cache.address"),
 		Password: viper.GetString("redis_cache.password"),
 		DB:       viper.GetInt("redis_cache.db-num"),
 	})
@@ -44,4 +44,3 @@ func oracleConnection() (*sqlx.DB, error) {
 	return sqlx.Open(driver, dns)
 
 }
-

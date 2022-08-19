@@ -9,7 +9,7 @@ RUN go mod download
 COPY . ./
 RUN go build -o main .
 #=============================================================
-#--------------------- final stage -----------------------
+#--------------------- final stage ---------------------------
 #=============================================================
 FROM oracle/instantclient:21 AS final_stage
 COPY --from=build_stage /app/main /
